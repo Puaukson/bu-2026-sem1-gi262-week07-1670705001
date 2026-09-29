@@ -34,14 +34,54 @@ namespace Searching
 
         public void RecordScore(PlayerScore score)
         {
-            // [1] sequential search if the player is already in the list
+            // [1] ค้นหาว่ามีผู้เล่นคนนี้ในรายการแล้วหรือยัง
+            int index = -1;
 
-           
-            // [2] find index to insert that make the scores list sorted with binary search
-            
+            for (int i = 0; i < scores.Count; i++)
+            {
+                if (scores[i].playerName == score.playerName)
+                {
+                    index = i;
+                    break;
+                }
+            }
 
-            // [3] If the score is not found, insert it at the appropriate index
-           
+            if (index != -1)
+            {
+                scores.RemoveAt(index);
+            }
+
+            // [2] หาตำแหน่งแทรกคะแนนด้วย Binary Search
+            index = -1;
+            int left = 0;
+            int right = scores.Count - 1;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+
+                if (scores[mid].score == score.score)
+                {
+                    index = mid;
+                    break;
+                }
+                else if (scores[mid].score < score.score)
+                {
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+                }
+            }
+
+            // [3] ถ้าไม่พบคะแนนเท่ากัน ให้แทรกในตำแหน่งที่ค้นหาได้
+            if (index == -1)
+            {
+                index = left;
+            }
+
+            scores.Insert(index, score);
 
         }
 
