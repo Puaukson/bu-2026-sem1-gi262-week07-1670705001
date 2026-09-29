@@ -103,17 +103,54 @@ namespace Assignment
 
         public int[] AS01_FindFirstAndLastElementOfArray(int[] array, int target)
         {
-            throw new NotImplementedException();
+            int first = -1;
+            int last = -1;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == target)
+                {
+                    if (first == -1)
+                        first = i;
+
+                    last = i;
+                }
+            }
+
+            if (first == -1)
+                return new int[] { -1 };
+
+            return new int[] { first, last };
         }
+        
 
         public int AS02_FindMaxLessThan(int[] array, int target)
         {
-            throw new NotImplementedException();
+            int result = -1;
+
+            foreach (int number in array)
+            {
+                if (number < target && number > result)
+                    result = number;
+            }
+
+            return result;
+        
         }
 
         public int[] AS03_FindRange(int[] array, int min, int max)
         {
-            throw new NotImplementedException();
+            System.Collections.Generic.List<int> result =
+        new System.Collections.Generic.List<int>();
+
+            foreach (int number in array)
+            {
+                if (number >= min && number <= max)
+                    result.Add(number);
+            }
+
+            return result.ToArray();
+        
         }
 
         #endregion
@@ -122,9 +159,38 @@ namespace Assignment
 
         public int[] EX01_FindTargetEnemies(int[] enemyHPs, int mana)
         {
-            throw new NotImplementedException();
+            // เก็บตำแหน่งศัตรูไว้ เพื่อคืนผลตามลำดับเดิม
+            int[] indices = new int[enemyHPs.Length];
+            for (int i = 0; i < indices.Length; i++)
+                indices[i] = i;
+
+            // เรียงตำแหน่งตาม HP จากน้อยไปมาก
+            System.Array.Sort(indices, (a, b) => enemyHPs[a].CompareTo(enemyHPs[b]));
+
+            bool[] selected = new bool[enemyHPs.Length];
+            int remainingMana = mana;
+
+            foreach (int index in indices)
+            {
+                if (enemyHPs[index] <= remainingMana)
+                {
+                    selected[index] = true;
+                    remainingMana -= enemyHPs[index];
+                }
+            }
+
+            var result = new System.Collections.Generic.List<int>();
+
+            for (int i = 0; i < enemyHPs.Length; i++)
+            {
+                if (selected[i])
+                    result.Add(enemyHPs[i]);
+            }
+
+            return result.ToArray();
         }
+    }
 
         #endregion
-    }
+    
 }
